@@ -19,12 +19,15 @@ module Pod
           [
             ['--template-url=URL', 'The URL of the git repo containing a ' \
                                   'compatible template'],
+            ['--git-depth=DEPTH', 'Equals to git flag \'--depth=DEPTH\', '\
+                                  'by default the value of DEPTH is 1'],
           ].concat(super)
         end
 
         def initialize(argv)
           @name = argv.shift_argument
           @template_url = argv.option('template-url', TEMPLATE_REPO)
+          @template_clone_depth = argv.option('--clone-depth', TEMPLATE_CLONE_DEPTH)
           super
           @additional_args = argv.remainder!
         end
@@ -54,6 +57,7 @@ module Pod
 
         TEMPLATE_REPO = 'https://github.com/CocoaPods/pod-template.git'.freeze
         TEMPLATE_INFO_URL = 'https://github.com/CocoaPods/pod-template'.freeze
+        TEMPLATE_CLONE_DEPTH = '1'
         CREATE_NEW_POD_INFO_URL = 'http://guides.cocoapods.org/making/making-a-cocoapod'.freeze
 
         # Clones the template from the remote in the working directory using
@@ -63,7 +67,7 @@ module Pod
         #
         def clone_template
           UI.section("Cloning `#{template_repo_url}` into `#{@name}`.") do
-            git! ['clone', template_repo_url, @name]
+            git! ['clone', template_repo_url, @name, template_clone_depth_flag]
           end
         end
 
@@ -98,6 +102,14 @@ module Pod
         #
         def template_repo_url
           @template_url || TEMPLATE_REPO
+        end
+
+        # Checks if a depth option is given else returns the default --depth flag of git
+        #
+        # @return String
+        #
+        def template_clone_depth_flag
+          "--depth=#{@template_clone_depth || TEMPLATE_CLONE_DEPTH}"
         end
       end
     end
