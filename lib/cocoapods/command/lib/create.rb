@@ -20,7 +20,7 @@ module Pod
             ['--template-url=URL', 'The URL of the git repo containing a ' \
                                   'compatible template'],
             ['--git-depth=DEPTH', 'Equals to git flag \'--depth=DEPTH\', '\
-                                  'by default the value of DEPTH is 1'],
+                                  'by default clone the template repo unshallowed.'],
           ].concat(super)
         end
 
@@ -109,7 +109,11 @@ module Pod
         # @return String
         #
         def template_clone_depth_flag
-          "--depth=#{@template_clone_depth || TEMPLATE_CLONE_DEPTH}"
+          if @template_clone_depth
+            "--depth=#{@template_clone_depth}" 
+          else
+            ""
+          end
         end
       end
     end
