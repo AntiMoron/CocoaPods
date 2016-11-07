@@ -19,7 +19,7 @@ module Pod
           [
             ['--template-url=URL', 'The URL of the git repo containing a ' \
                                   'compatible template'],
-            ['--git-depth=DEPTH', 'Equals to git flag \'--depth=DEPTH\', '\
+            ['--clone-depth=DEPTH', 'Equals to git flag \'--depth=DEPTH\', '\
                                   'by default clone the template repo unshallowed.'],
           ].concat(super)
         end
@@ -57,7 +57,7 @@ module Pod
 
         TEMPLATE_REPO = 'https://github.com/CocoaPods/pod-template.git'.freeze
         TEMPLATE_INFO_URL = 'https://github.com/CocoaPods/pod-template'.freeze
-        TEMPLATE_CLONE_DEPTH = '1'
+        TEMPLATE_CLONE_DEPTH = '1'.freeze
         CREATE_NEW_POD_INFO_URL = 'http://guides.cocoapods.org/making/making-a-cocoapod'.freeze
 
         # Clones the template from the remote in the working directory using
